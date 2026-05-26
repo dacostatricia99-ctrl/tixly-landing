@@ -1,4 +1,5 @@
-import { Download, Apple, Ticket } from 'lucide-react';
+import { Download, Apple } from 'lucide-react';
+import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
     <div className="container">
       <header className="header">
         <div className="logo">
-          <Ticket size={32} color="#6366f1" />
+          <img src={logoTixly} alt="Logo Tixly" className="logo-mark" />
           Tixly
         </div>
       </header>
