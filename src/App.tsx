@@ -15,6 +15,9 @@ import {
 import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
+const ANDROID_APK_URL =
+  'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.0.0/tixly.apk';
+
 const features = [
   {
     icon: Compass,
@@ -51,7 +54,7 @@ const features = [
 function DownloadButtons() {
   return (
     <div className="download-buttons">
-      <a href="/tixly.apk" download className="btn btn-primary">
+      <a href={ANDROID_APK_URL} className="btn btn-primary">
         <Download size={22} />
         Télécharger pour Android
       </a>
