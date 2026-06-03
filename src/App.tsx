@@ -18,6 +18,52 @@ import './index.css';
 const ANDROID_APK_URL =
   'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.1.1/tixly.apk';
 
+// Vitrine d'événements — photos Unsplash libres (remplaçables par de vrais events plus tard)
+const showcaseEvents = [
+  {
+    img: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Festival',
+    title: 'Festival Lumière',
+    where: 'Brazzaville',
+    when: '12–13 juin',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Soirée',
+    title: 'Afro House Sessions',
+    where: 'Luanda',
+    when: '8 juin',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Concert',
+    title: 'Soirée Live au Riverside',
+    where: 'Pointe-Noire',
+    when: '15 mai',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Concert',
+    title: 'Open Air électro',
+    where: 'Kinshasa',
+    when: '22 juin',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Festival',
+    title: 'Rumba Days',
+    where: 'Brazzaville',
+    when: '5–7 juillet',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=700&h=900&fit=crop&q=80&auto=format',
+    category: 'Culture',
+    title: 'Jazz au Sénat',
+    where: 'Pointe-Noire',
+    when: '27 mai',
+  },
+];
+
 const features = [
   {
     icon: Compass,
@@ -139,6 +185,40 @@ function App() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Vitrine d'événements (style dice.fm) */}
+        <section className="section showcase" id="discover">
+          <div className="section-head">
+            <h2>Une bibliothèque d'événements à découvrir</h2>
+            <p>
+              Des concerts intimes aux grands festivals, trouvez la prochaine
+              soirée qui vous correspond.
+            </p>
+          </div>
+          <div className="showcase-grid">
+            {showcaseEvents.map((e) => (
+              <a key={e.title} className="showcase-card" href="#download">
+                <div
+                  className="showcase-img"
+                  style={{ backgroundImage: `url(${e.img})` }}
+                  aria-hidden="true"
+                />
+                <span className="showcase-badge">{e.category}</span>
+                <div className="showcase-overlay">
+                  <h3>{e.title}</h3>
+                  <div className="showcase-meta">
+                    <span>
+                      <MapPin size={14} /> {e.where}
+                    </span>
+                    <span>
+                      <CalendarDays size={14} /> {e.when}
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
         </section>
 
