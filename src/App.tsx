@@ -11,12 +11,15 @@ import {
   CalendarDays,
   MapPin,
   Sparkles,
+  Globe,
 } from 'lucide-react';
 import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
 const ANDROID_APK_URL =
   'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.2.1/tixly.apk';
+
+const PWA_URL = 'https://tixly-app-teal.vercel.app';
 
 // Vitrine d'événements — photos Unsplash libres (remplaçables par de vrais events plus tard)
 const showcaseEvents = [
@@ -104,9 +107,17 @@ function DownloadButtons() {
         <Download size={22} />
         Télécharger pour Android
       </a>
-      <a href="/tixly.ipa" download className="btn btn-secondary">
-        <Apple size={22} />
-        Télécharger pour iOS
+      <a
+        href={PWA_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn-secondary"
+      >
+        <Globe size={22} />
+        Ouvrir l'app web
+        <span className="btn-meta">
+          <Apple size={14} /> iPhone &amp; navigateur
+        </span>
       </a>
     </div>
   );
