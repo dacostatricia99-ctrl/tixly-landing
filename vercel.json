@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/cgu", "destination": "/cgu/index.html" },
+    { "source": "/politique-contenu", "destination": "/politique-contenu/index.html" }
+  ]
+}
