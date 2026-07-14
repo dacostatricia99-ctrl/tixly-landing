@@ -13,13 +13,14 @@ import {
   Sparkles,
   Globe,
 } from 'lucide-react';
+import SocialBar from './components/SocialBar';
 import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
 const ANDROID_APK_URL =
   'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.3.0/tixly.apk';
 
-const PWA_URL = 'https://tixly-app-teal.vercel.app';
+const PWA_URL = 'https://app.tixly-africa.com';
 
 // Vitrine d'événements — photos Unsplash libres (remplaçables par de vrais events plus tard)
 const showcaseEvents = [
@@ -143,7 +144,7 @@ function App() {
           </nav>
         </div>
       </header>
-
+      <SocialBar />
       <main id="top" className="container">
         {/* Hero */}
         <section className="hero">
