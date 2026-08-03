@@ -18,7 +18,7 @@ import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
 const ANDROID_APK_URL =
-  'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.3.0/tixly.apk';
+  'https://github.com/dacostatricia99-ctrl/tixly-landing/releases/download/v1.3.2/tixly.apk';
 
 const PWA_URL = 'https://app.tixly-africa.com';
 
