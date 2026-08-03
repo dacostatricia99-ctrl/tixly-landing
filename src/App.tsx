@@ -14,6 +14,7 @@ import {
   Globe,
 } from 'lucide-react';
 import SocialBar from './components/SocialBar';
+import AdSlot from './AdSlot';
 import logoTixly from './assets/logo-tixly.png';
 import './index.css';
 
@@ -233,6 +234,9 @@ function App() {
             ))}
           </div>
         </section>
+
+        {/* Emplacement publicitaire (AdSense) — rien tant que non configuré */}
+        <AdSlot />
 
         {/* Features */}
         <section className="section" id="features">

@@ -58,6 +58,30 @@ a {
   padding: 0 1.5rem;
 }
 
+/* Emplacement publicitaire AdSense (landing) */
+.ad-slot-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2.5rem;
+}
+.ad-slot {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 100px;
+}
+.ad-slot-label {
+  position: absolute;
+  top: 6px;
+  left: 12px;
+  z-index: 1;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+}
+
 /* ===== Header ===== */
 .header {
   position: sticky;
