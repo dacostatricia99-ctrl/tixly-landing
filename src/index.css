@@ -696,3 +696,18 @@ a {
     padding: 2.5rem 1.3rem;
   }
 }
+
+/* Vitrine en direct : chargement et état vide */
+.showcase-skeleton {
+  background: linear-gradient(100deg, #eef0f6 30%, #f7f8fb 50%, #eef0f6 70%);
+  background-size: 200% 100%;
+  animation: showcase-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes showcase-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .showcase-skeleton { animation: none; } }
+.showcase-empty {
+  text-align: center;
+  color: var(--muted, #5b6475);
+  font-size: 1rem;
+}
+.showcase-empty a { color: inherit; font-weight: 600; }

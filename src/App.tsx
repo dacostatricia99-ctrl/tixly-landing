@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Download,
   Apple,
@@ -23,51 +24,44 @@ const ANDROID_APK_URL =
 
 const PWA_URL = 'https://app.tixly-africa.com';
 
-// Vitrine d'événements — photos Unsplash libres (remplaçables par de vrais events plus tard)
-const showcaseEvents = [
-  {
-    img: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Festival',
-    title: 'Festival Lumière',
-    where: 'Brazzaville',
-    when: '12–13 juin',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Soirée',
-    title: 'Afro House Sessions',
-    where: 'Luanda',
-    when: '8 juin',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Concert',
-    title: 'Soirée Live au Riverside',
-    where: 'Pointe-Noire',
-    when: '15 mai',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Concert',
-    title: 'Open Air électro',
-    where: 'Kinshasa',
-    when: '22 juin',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Festival',
-    title: 'Rumba Days',
-    where: 'Brazzaville',
-    when: '5–7 juillet',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=700&h=900&fit=crop&q=80&auto=format',
-    category: 'Culture',
-    title: 'Jazz au Sénat',
-    where: 'Pointe-Noire',
-    when: '27 mai',
-  },
-];
+// Vitrine : les VRAIS événements publiés sur Tixly (à venir en premier), lus en
+// direct avec la clé publique Supabase — mêmes règles d'accès que l'app pour un
+// visiteur (événements publics et approuvés seulement).
+const SUPABASE_URL = 'https://akjrvareqtopmgkbbnkm.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_su-qpa-jfma11VdLYW_OJw_KySYsZfw';
+
+type ShowcaseEvent = {
+  id: string;
+  title: string;
+  category: string;
+  location: string;
+  date: string;
+  image_url: string | null;
+};
+
+function useShowcaseEvents() {
+  const [events, setEvents] = useState<ShowcaseEvent[] | null>(null);
+  useEffect(() => {
+    const since = new Date(Date.now() - 12 * 3600 * 1000).toISOString();
+    const url =
+      `${SUPABASE_URL}/rest/v1/events?select=id,title,category,location,date,image_url` +
+      `&status=eq.approved&is_private=eq.false&date=gte.${encodeURIComponent(since)}` +
+      `&order=date.asc&limit=6`;
+    fetch(url, { headers: { apikey: SUPABASE_PUBLISHABLE_KEY } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((rows) => setEvents(Array.isArray(rows) ? rows : []))
+      .catch(() => setEvents([]));
+  }, []);
+  return events;
+}
+
+function eventUrl(e: ShowcaseEvent) {
+  return `${PWA_URL}/?event=${encodeURIComponent(e.id)}`;
+}
+
+function formatWhen(iso: string) {
+  return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
 
 const features = [
   {
@@ -126,6 +120,7 @@ function DownloadButtons() {
 }
 
 function App() {
+  const showcase = useShowcaseEvents();
   return (
     <>
       <header className="header">
@@ -163,7 +158,7 @@ function App() {
               QR code. Tixly réunit toute votre billetterie dans une seule app.
             </p>
             <DownloadButtons />
-            <p className="store-note">Gratuit • Disponible sur Android et iOS</p>
+            <p className="store-note">Gratuit sur Android, et sur iPhone depuis le navigateur</p>
           </div>
 
           <div className="hero-visual">
@@ -204,35 +199,46 @@ function App() {
         {/* Vitrine d'événements (style dice.fm) */}
         <section className="section showcase" id="discover">
           <div className="section-head">
-            <h2>Une bibliothèque d'événements à découvrir</h2>
+            <h2>Les prochains événements sur Tixly</h2>
             <p>
               Des concerts intimes aux grands festivals, trouvez la prochaine
               soirée qui vous correspond.
             </p>
           </div>
-          <div className="showcase-grid">
-            {showcaseEvents.map((e) => (
-              <a key={e.title} className="showcase-card" href="#download">
-                <div
-                  className="showcase-img"
-                  style={{ backgroundImage: `url(${e.img})` }}
-                  aria-hidden="true"
-                />
-                <span className="showcase-badge">{e.category}</span>
-                <div className="showcase-overlay">
-                  <h3>{e.title}</h3>
-                  <div className="showcase-meta">
-                    <span>
-                      <MapPin size={14} /> {e.where}
-                    </span>
-                    <span>
-                      <CalendarDays size={14} /> {e.when}
-                    </span>
+          {showcase === null ? (
+            <div className="showcase-grid" aria-busy="true">
+              {[0, 1, 2].map((i) => <div key={i} className="showcase-card showcase-skeleton" />)}
+            </div>
+          ) : showcase.length === 0 ? (
+            <p className="showcase-empty">
+              Les prochains événements arrivent bientôt. Organisateur ?{' '}
+              <a href={PWA_URL} target="_blank" rel="noopener noreferrer">Publiez le vôtre sur Tixly</a>.
+            </p>
+          ) : (
+            <div className="showcase-grid">
+              {showcase.map((e) => (
+                <a key={e.id} className="showcase-card" href={eventUrl(e)} target="_blank" rel="noopener noreferrer">
+                  <div
+                    className="showcase-img"
+                    style={e.image_url ? { backgroundImage: `url(${e.image_url})` } : undefined}
+                    aria-hidden="true"
+                  />
+                  <span className="showcase-badge">{e.category}</span>
+                  <div className="showcase-overlay">
+                    <h3>{e.title}</h3>
+                    <div className="showcase-meta">
+                      <span>
+                        <MapPin size={14} /> {e.location}
+                      </span>
+                      <span>
+                        <CalendarDays size={14} /> {formatWhen(e.date)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
-          </div>
+                </a>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Emplacement publicitaire (AdSense) — rien tant que non configuré */}
